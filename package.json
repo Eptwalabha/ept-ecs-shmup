@@ -1,0 +1,41 @@
+{
+  "name": "shmup",
+  "version": "0.0.1",
+  "description": "Shoot 'em up made with ept-ecs",
+  "main": "index.js",
+  "scripts": {
+    "clean": "shx rm -rf dist lib",
+    "build-tsc": "shx rm -rf lib && tsc",
+    "build-webpack": "shx rm -rf dist && webpack && rm -rf dist/lib",
+    "build": "npm run clean && npm run build-tsc && tsc && npm run build-webpack",
+    "test": "npm run build-tsc && mocha tests/**/*_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Eptwalabha/ept-ecs-shmup.git"
+  },
+  "keywords": [
+    "shoot-em-up",
+    "shmup",
+    "ept-ecs",
+    "entity-component-system"
+  ],
+  "author": "Eptwalabha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Eptwalabha/ept-ecs-shmup/issues"
+  },
+  "homepage": "https://github.com/Eptwalabha/ept-ecs-shmup#readme",
+  "dependencies": {
+    "ept-ecs": "^1.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "sinon": "^4.1.2",
+    "shx": "^0.2.2",
+    "ts-loader": "^3.1.1",
+    "typescript": "^2.6.2",
+    "webpack": "^3.8.1"
+  }
+}

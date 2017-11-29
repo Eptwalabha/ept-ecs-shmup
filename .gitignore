@@ -1,0 +1,8 @@
+node_modules
+lib
+dist
+npm-debug.log
+*.swp
+.idea
+*.tgz
+package-lock.json
