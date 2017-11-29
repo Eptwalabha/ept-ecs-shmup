@@ -26,7 +26,7 @@ export class EnemySpawnerSystem extends DelayedSystem {
     protected processSystem(): void {
         var enemy = this.world.create();
         this.enemyManager.add(enemy);
-        this.positionManager.add(enemy, new Position(450, Math.random() * 400));
+        this.positionManager.add(enemy, new Position(450, Math.random() * 360 + 40));
         this.velocityManager.add(enemy, new Velocity(-30 - Math.random() * 30, 0));
         this.hitboxManager.add(enemy, new HitBox(Math.floor(Math.random() * 5) + 4));
         this.graphicManager.add(enemy);

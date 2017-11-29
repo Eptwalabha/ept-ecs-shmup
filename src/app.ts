@@ -13,6 +13,7 @@ import {Player} from "./components/Player";
 import {Health} from "./components/Health";
 import {InputSystem} from "./systems/InputSystem";
 import {Bound} from "./components/Bound";
+import {UISystem} from "./systems/UISystem";
 
 let canvas: HTMLCanvasElement = document.getElementById("game-canvas") as HTMLCanvasElement;
 let context: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -38,12 +39,13 @@ world
     .addSystem(new VelocitySystem())
     .addSystem(new CollisionSystem())
     .addSystem(new GraphicSystem(context))
+    .addSystem(new UISystem(context))
     .init();
 
 let player = world.create();
 world.getComponentManager("player").add(player);
 world.getComponentManager("hitbox").add(player, new HitBox(5));
-world.getComponentManager("bound").add(player, new Bound(10, 10, canvas.width - 20, canvas.height - 20));
+world.getComponentManager("bound").add(player, new Bound(10, 40, canvas.width - 20, canvas.height - 50));
 world.getComponentManager("input").add(player);
 world.getComponentManager("velocity").add(player, new Velocity(0, 0));
 world.getComponentManager("position").add(player, new Position(50, 200));
