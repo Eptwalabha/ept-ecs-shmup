@@ -7,6 +7,7 @@ export class VelocitySystem extends EntitySystem {
     private positionManager: Manager;
     private velocityManager: Manager;
     private boundManager: Manager;
+    private oobManager: Manager;
     private delta: number;
 
     constructor() {
@@ -19,6 +20,7 @@ export class VelocitySystem extends EntitySystem {
         this.positionManager = world.getComponentManager("position");
         this.velocityManager = world.getComponentManager("velocity");
         this.boundManager = world.getComponentManager("bound");
+        this.oobManager = world.getComponentManager("outOfBound");
     }
 
     protected beforeProcess () {
@@ -37,8 +39,11 @@ export class VelocitySystem extends EntitySystem {
             if (position.y < bound.y) position.y = bound.y;
             if (position.y > bound.y + bound.h) position.y = bound.y + bound.h;
         }
-        if (position.x < -10) {
-            this.world.remove(entity);
+        if (this.oobManager.has(entity)) {
+            let oob: Bound = this.oobManager.fetch(entity) as Bound;
+            if (position.x < oob.x || position.x > oob.x + oob.w || position.y < oob.y || position.y > oob.y + oob.h) {
+                this.world.remove(entity);
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
 import {Velocity} from "../components/Velocity";
+import {Gun} from "../components/Gun";
 
 enum Key {
+    SPACE = 32,
     UP = 38,
     DOWN = 40,
     LEFT = 37,
@@ -10,10 +12,12 @@ enum Key {
 
 export class InputSystem extends EntitySystem {
     private velocityManager: Manager;
+    private gunManager: Manager;
     public up: boolean;
     public down: boolean;
     public left: boolean;
     public right: boolean;
+    public space: boolean;
 
     constructor() {
         super(new Aspect().all("position", "velocity", "input"));
@@ -26,6 +30,7 @@ export class InputSystem extends EntitySystem {
     public init(world) {
         super.init(world);
         this.velocityManager = world.getComponentManager("velocity");
+        this.gunManager = world.getComponentManager("gun");
     }
 
     protected process(entity: number): void {
@@ -39,6 +44,10 @@ export class InputSystem extends EntitySystem {
             velocity.x = 0;
         } else {
             velocity.x = this.left ? -200 : 200;
+        }
+        if (this.gunManager.has(entity)) {
+            let gun = this.gunManager.fetch(entity) as Gun;
+            gun.shooting = this.space;
         }
     }
 
@@ -55,6 +64,9 @@ export class InputSystem extends EntitySystem {
                 break;
             case Key.RIGHT:
                 this.right = keyDown;
+                break;
+            case Key.SPACE:
+                this.space = keyDown;
                 break;
         }
     }
