@@ -16,6 +16,8 @@ import {Gun} from "./components/Gun";
 import {ShootingSystem} from "./systems/ShootingSystem";
 import {GrowSystem} from "./systems/GrowSystem";
 import {Grow} from "./components/Grow";
+import {Sinusoid} from "./components/Sinusoid";
+import {SinusoidSystem} from "./systems/SinusoidSystem";
 
 let canvas: HTMLCanvasElement = document.getElementById("game-canvas") as HTMLCanvasElement;
 let context: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -26,7 +28,7 @@ world
     .registerComponent("bound", new Bound(-30, -30, canvas.width + 60, canvas.height + 60))
     .registerComponent("bullet", new Tag())
     .registerComponent("dead", new Tag())
-    .registerComponent("outOfBound", new Bound(-20, -20, canvas.width + 40, canvas.height + 40))
+    .registerComponent("outOfBound", new Bound(-20, -50, canvas.width + 150, canvas.height + 100))
     .registerComponent("enemy", new Tag())
     .registerComponent("graphic", new Tag())
     .registerComponent("grow", new Grow())
@@ -38,11 +40,14 @@ world
     .registerComponent("input", new Tag())
     .registerComponent("player", new Tag())
     .registerComponent("position", new Position(0, 0))
+    .registerComponent("sinusoidX", new Sinusoid(1, 200))
+    .registerComponent("sinusoidY", new Sinusoid(1, 200))
     .registerComponent("velocity", new Velocity(-1, 0))
     .addSystem(new EnemySpawnerSystem(1000))
     .addSystem(inputSystem)
     .addSystem(new GrowSystem())
     .addSystem(new ShootingSystem())
+    .addSystem(new SinusoidSystem())
     .addSystem(new VelocitySystem())
     .addSystem(new CollisionSystem())
     .addSystem(new GraphicSystem(context))

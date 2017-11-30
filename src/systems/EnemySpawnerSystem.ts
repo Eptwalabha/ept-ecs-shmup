@@ -3,6 +3,7 @@ import {Position} from '../components/Position';
 import {Velocity} from "../components/Velocity";
 import {HitBox} from "../components/HitBox";
 import {Gun} from "../components/Gun";
+import {Sinusoid} from "../components/Sinusoid";
 
 export class EnemySpawnerSystem extends DelayedSystem {
     private enemyManager: Manager;
@@ -27,6 +28,14 @@ export class EnemySpawnerSystem extends DelayedSystem {
             let gun = new Gun(2000);
             gun.shooting = true;
             this.world.getComponentManager("gun").add(enemy, gun);
+        }
+        if (Math.random() <= 0.5) {
+            let sinusoid = new Sinusoid(Math.random() * 2 + 1, Math.random() * 130 + 70);
+            this.world.getComponentManager("sinusoidX").add(enemy, sinusoid);
+        }
+        if (Math.random() <= 0.5) {
+            let sinusoid = new Sinusoid(Math.random() * 2 + 1, Math.random() * 130 + 70);
+            this.world.getComponentManager("sinusoidY").add(enemy, sinusoid);
         }
     }
 
