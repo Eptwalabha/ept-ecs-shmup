@@ -1,12 +1,14 @@
 import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
 import {Position} from "../components/Position";
 import {HitBox} from "../components/HitBox";
+import {Grow} from "../components/Grow";
 
 export class GraphicSystem extends EntitySystem {
     private positionManager: Manager;
     private hitboxManager: Manager;
     private bulletManager: Manager;
     private enemyManager: Manager;
+    private growManager: Manager;
     private context: CanvasRenderingContext2D;
 
     constructor(context: CanvasRenderingContext2D) {
@@ -20,6 +22,7 @@ export class GraphicSystem extends EntitySystem {
         this.hitboxManager = world.getComponentManager("hitbox");
         this.enemyManager = world.getComponentManager("enemy");
         this.bulletManager = world.getComponentManager("bullet");
+        this.growManager = world.getComponentManager("grow");
     }
 
     protected beforeProcess () {
@@ -32,17 +35,10 @@ export class GraphicSystem extends EntitySystem {
         let position: Position = this.positionManager.fetch(entity) as Position;
         this.context.beginPath();
         this.context.fillStyle = this.getStrokeStyle(entity);
-        if (this.hitboxManager.has(entity)) {
-            let hitbox: HitBox = this.hitboxManager.fetch(entity) as HitBox;
-            this.context.arc(position.x, position.y, hitbox.radius, 0, Math.PI * 2, true);
-        } else {
-            this.context.arc(position.x, position.y, 6, 0, Math.PI * 2, true);
-        }
+        let radius = this.getRadius(entity);
+        this.context.arc(position.x, position.y, radius, 0, Math.PI * 2, true);
         this.context.fill();
         this.context.stroke();
-    }
-
-    protected afterProcess () {
     }
 
     private getStrokeStyle(entity: number) {
@@ -52,5 +48,18 @@ export class GraphicSystem extends EntitySystem {
             return '#0000ff';
         }
         return '#00ff00';
+    }
+
+    private getRadius(entity: number): number {
+        if (this.hitboxManager.has(entity)) {
+            let hitbox: HitBox = this.hitboxManager.fetch(entity) as HitBox;
+            if (this.growManager.has(entity)) {
+                let grow: Grow = this.growManager.fetch(entity) as Grow;
+                return hitbox.radius * grow.ratio;
+            } else {
+                return hitbox.radius;
+            }
+        }
+        return 6;
     }
 }

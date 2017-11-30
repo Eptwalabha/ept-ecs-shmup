@@ -49,6 +49,13 @@ export class InputSystem extends EntitySystem {
             let gun = this.gunManager.fetch(entity) as Gun;
             gun.shooting = this.space;
         }
+        if (this.world.getComponentManager("grow").has(entity)) {
+            if (this.space) {
+                this.world.getComponentManager("growing").add(entity);
+            } else {
+                this.world.getComponentManager("growing").remove(entity);
+            }
+        }
     }
 
     public updateInput (keyCode: number, keyDown: boolean) {
