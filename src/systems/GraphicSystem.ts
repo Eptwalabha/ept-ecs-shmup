@@ -2,6 +2,7 @@ import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
 import {Position} from "../components/Position";
 import {HitBox} from "../components/HitBox";
 import {Grow} from "../components/Grow";
+import {Cooldown} from "../components/Cooldown";
 
 export class GraphicSystem extends EntitySystem {
     private positionManager: Manager;
@@ -9,6 +10,8 @@ export class GraphicSystem extends EntitySystem {
     private bulletManager: Manager;
     private enemyManager: Manager;
     private growManager: Manager;
+    private hitManager: Manager;
+    private deadManager: Manager;
     private context: CanvasRenderingContext2D;
 
     constructor(context: CanvasRenderingContext2D) {
@@ -23,6 +26,8 @@ export class GraphicSystem extends EntitySystem {
         this.enemyManager = world.getComponentManager("enemy");
         this.bulletManager = world.getComponentManager("bullet");
         this.growManager = world.getComponentManager("grow");
+        this.hitManager = world.getComponentManager("hit");
+        this.deadManager = world.getComponentManager("dead");
     }
 
     protected beforeProcess () {
@@ -43,11 +48,11 @@ export class GraphicSystem extends EntitySystem {
 
     private getStrokeStyle(entity: number) {
         if (this.enemyManager.has(entity)) {
-            return '#ff0000';
+            return this.deadManager.has(entity) ? '#ff000022' : '#ff0000';
         } else if (this.bulletManager.has(entity)) {
             return '#0000ff';
         }
-        return '#00ff00';
+        return this.hitManager.has(entity) ? '#00ff0022' : '#00ff00';
     }
 
     private getRadius(entity: number): number {

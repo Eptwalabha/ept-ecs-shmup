@@ -17,7 +17,7 @@ export class GrowSystem extends EntitySystem {
 
     protected process(entity: number): void {
         let grow: Grow = this.growManager.fetch(entity) as Grow;
-        if (this.growingManager.has(entity)) {
+        if (this.growingManager.has(entity) && !this.world.getComponentManager("hit").has(entity)) {
             grow.ratio += grow.increasePerSecond * this.world.delta / 1000;
         } else {
             grow.ratio -= grow.decreasePerSecond * this.world.delta / 1000;

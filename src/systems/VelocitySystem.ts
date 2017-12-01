@@ -11,7 +11,7 @@ export class VelocitySystem extends EntitySystem {
     private delta: number;
 
     constructor() {
-        super(new Aspect().all("position", "velocity"));
+        super(new Aspect().all("position", "velocity").none("dead"));
         this.delta = 0;
     }
 

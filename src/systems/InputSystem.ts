@@ -38,12 +38,12 @@ export class InputSystem extends EntitySystem {
         if (this.up === this.down) {
             velocity.y = 0;
         } else {
-            velocity.y = this.up ? -200 : 200;
+            velocity.y = this.up ? -150 : 150;
         }
         if (this.left === this.right) {
             velocity.x = 0;
         } else {
-            velocity.x = this.left ? -200 : 200;
+            velocity.x = this.left ? -150 : 150;
         }
         if (this.gunManager.has(entity)) {
             let gun = this.gunManager.fetch(entity) as Gun;

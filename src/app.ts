@@ -5,7 +5,6 @@ import {Velocity} from "./components/Velocity";
 import {EnemySpawnerSystem} from "./systems/EnemySpawnerSystem";
 import {VelocitySystem} from "./systems/VelocitySystem";
 import {Tag} from "./components/Tag";
-import {Hit} from "./components/Hit";
 import {CollisionSystem} from "./systems/CollisionSystem";
 import {GraphicSystem} from "./systems/GraphicSystem";
 import {Health} from "./components/Health";
@@ -18,6 +17,10 @@ import {GrowSystem} from "./systems/GrowSystem";
 import {Grow} from "./components/Grow";
 import {Sinusoid} from "./components/Sinusoid";
 import {SinusoidSystem} from "./systems/SinusoidSystem";
+import {Collision, Group} from "./components/Collision";
+import {HitSystem} from "./systems/HitSystem";
+import {Cooldown} from "./components/Cooldown";
+import {DeadSystem} from "./systems/DeadSystem";
 
 let canvas: HTMLCanvasElement = document.getElementById("game-canvas") as HTMLCanvasElement;
 let context: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -27,7 +30,8 @@ let world = new World();
 world
     .registerComponent("bound", new Bound(-30, -30, canvas.width + 60, canvas.height + 60))
     .registerComponent("bullet", new Tag())
-    .registerComponent("dead", new Tag())
+    .registerComponent("collision", new Collision(Group.PLAYER))
+    .registerComponent("dead", new Cooldown(500))
     .registerComponent("outOfBound", new Bound(-20, -50, canvas.width + 150, canvas.height + 100))
     .registerComponent("enemy", new Tag())
     .registerComponent("graphic", new Tag())
@@ -35,7 +39,7 @@ world
     .registerComponent("growing", new Tag())
     .registerComponent("gun", new Gun(2000))
     .registerComponent("health", new Health(3))
-    .registerComponent("hit", new Hit(500))
+    .registerComponent("hit", new Cooldown(1000))
     .registerComponent("hitbox", new HitBox(10))
     .registerComponent("input", new Tag())
     .registerComponent("player", new Tag())
@@ -43,13 +47,15 @@ world
     .registerComponent("sinusoidX", new Sinusoid(1, 200))
     .registerComponent("sinusoidY", new Sinusoid(1, 200))
     .registerComponent("velocity", new Velocity(-1, 0))
-    .addSystem(new EnemySpawnerSystem(1000))
+    .addSystem(new EnemySpawnerSystem(1500))
     .addSystem(inputSystem)
     .addSystem(new GrowSystem())
     .addSystem(new ShootingSystem())
     .addSystem(new SinusoidSystem())
+    .addSystem(new HitSystem())
+    .addSystem(new DeadSystem())
     .addSystem(new VelocitySystem())
-    .addSystem(new CollisionSystem())
+    .addSystem(new CollisionSystem(70))
     .addSystem(new GraphicSystem(context))
     .addSystem(new UISystem(context))
     .init();
@@ -63,13 +69,17 @@ world.getComponentManager("velocity").add(player, new Velocity(0, 0));
 world.getComponentManager("position").add(player, new Position(50, 200));
 world.getComponentManager("graphic").add(player);
 world.getComponentManager("health").add(player);
-world.getComponentManager("gun").add(player, new Gun(300));
+world.getComponentManager("gun").add(player, new Gun(100));
 world.getComponentManager("grow").add(player);
+world.getComponentManager("collision").add(player, new Collision(Group.ENEMY));
 
 let now = 0, last = Date.now();
+let active = true;
 let loop = function () {
     now = Date.now();
-    world.process(now - last);
+    if (active) {
+        world.process(now - last);
+    }
     last = now;
     window.requestAnimationFrame(loop);
 };
@@ -77,8 +87,12 @@ let loop = function () {
 loop();
 
 document.onkeydown = function (event) {
+    if (event.keyCode === 13) {
+        active = !active;
+    }
     inputSystem.updateInput(event.keyCode, true);
 };
+
 
 document.onkeyup = function (event) {
     inputSystem.updateInput(event.keyCode, false);

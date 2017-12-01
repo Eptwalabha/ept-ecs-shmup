@@ -24,17 +24,23 @@ export class EnemySpawnerSystem extends DelayedSystem {
         this.world.getComponentManager("velocity").add(enemy, new Velocity(-30 - Math.random() * 30, 0));
         this.world.getComponentManager("hitbox").add(enemy, new HitBox(Math.floor(Math.random() * 5) + 4));
         this.world.getComponentManager("graphic").add(enemy);
+        this.world.getComponentManager("collision").add(enemy);
         if (Math.random() <= 0.2) {
             let gun = new Gun(2000);
             gun.shooting = true;
             this.world.getComponentManager("gun").add(enemy, gun);
         }
+        let randFreq = Math.random() * .5;
+        let randAmp = Math.random() * 130 + 70;
         if (Math.random() <= 0.5) {
-            let sinusoid = new Sinusoid(Math.random() * 2 + 1, Math.random() * 130 + 70);
+            let sinusoid = new Sinusoid(randFreq, randAmp);
             this.world.getComponentManager("sinusoidX").add(enemy, sinusoid);
-        }
-        if (Math.random() <= 0.5) {
-            let sinusoid = new Sinusoid(Math.random() * 2 + 1, Math.random() * 130 + 70);
+        } else if (Math.random() <= 0.5) {
+            let sinusoid = new Sinusoid(randFreq, randAmp);
+            this.world.getComponentManager("sinusoidY").add(enemy, sinusoid);
+        } else if (Math.random() <= 0.5) {
+            let sinusoid = new Sinusoid(randFreq, randAmp);
+            this.world.getComponentManager("sinusoidX").add(enemy, sinusoid);
             this.world.getComponentManager("sinusoidY").add(enemy, sinusoid);
         }
     }
