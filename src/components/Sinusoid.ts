@@ -1,4 +1,4 @@
-import {Component} from 'ept-ecs/lib';
+import {Component} from 'ept-ecs';
 
 export class Sinusoid extends Component {
     public frequency: number;

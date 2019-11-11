@@ -1,4 +1,4 @@
-import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
+import {Manager, EntitySystem, Aspect} from 'ept-ecs';
 import {Velocity} from "../components/Velocity";
 import {Gun} from "../components/Gun";
 

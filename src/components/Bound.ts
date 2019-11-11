@@ -1,4 +1,4 @@
-import {Component} from 'ept-ecs/lib';
+import {Component} from 'ept-ecs';
 
 export class Bound extends Component {
     public x: number;

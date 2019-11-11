@@ -1,15 +1,15 @@
-import {Manager, World, DelayedSystem} from 'ept-ecs/lib';
+import {Manager, World, IntervalSystem} from 'ept-ecs';
 import {Position} from '../components/Position';
 import {Velocity} from "../components/Velocity";
 import {HitBox} from "../components/HitBox";
 import {Gun} from "../components/Gun";
 import {Sinusoid} from "../components/Sinusoid";
 
-export class EnemySpawnerSystem extends DelayedSystem {
+export class EnemySpawnerSystem extends IntervalSystem {
     private enemyManager: Manager;
 
     constructor(delay: number) {
-        super(delay, delay);
+        super(delay);
     }
 
     public init(world: World) {

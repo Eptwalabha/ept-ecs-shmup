@@ -1,4 +1,4 @@
-import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
+import {Manager, EntitySystem, Aspect} from 'ept-ecs';
 import {Cooldown} from "../components/Cooldown";
 
 export class HitSystem extends EntitySystem {

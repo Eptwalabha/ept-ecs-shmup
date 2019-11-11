@@ -1,4 +1,4 @@
-import {World} from "ept-ecs/lib";
+import {World} from "ept-ecs";
 import {Position} from "./components/Position";
 import {HitBox} from "./components/HitBox";
 import {Velocity} from "./components/Velocity";
@@ -37,7 +37,7 @@ world
     .registerComponent("graphic", new Tag())
     .registerComponent("grow", new Grow())
     .registerComponent("growing", new Tag())
-    .registerComponent("gun", new Gun(2000))
+    .registerComponent("gun", new Gun(500))
     .registerComponent("health", new Health(3))
     .registerComponent("hit", new Cooldown(1000))
     .registerComponent("hitbox", new HitBox(10))

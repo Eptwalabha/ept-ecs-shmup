@@ -1,4 +1,4 @@
-import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
+import {Manager, EntitySystem, Aspect} from 'ept-ecs';
 import {Gun} from "../components/Gun";
 import {Velocity} from "../components/Velocity";
 import {Position} from "../components/Position";
@@ -27,7 +27,7 @@ export class ShootingSystem extends EntitySystem {
             gun.cooldown += gun.initialCooldown;
             let isPlayer: boolean = this.world.getComponentManager("player").has(entity);
             let bullet: number = this.world.create();
-            let bulletV: number = isPlayer ? 200 : -150;
+            let bulletV: number = isPlayer ? 400 : -150;
             let collision: Collision = isPlayer ? new Collision(Group.ENEMY) : new Collision(Group.PLAYER);
             this.world.getComponentManager("velocity").add(bullet, new Velocity(bulletV, 0));
             this.world.getComponentManager("bullet").add(bullet);

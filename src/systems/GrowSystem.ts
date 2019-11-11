@@ -1,4 +1,4 @@
-import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
+import {Manager, EntitySystem, Aspect} from 'ept-ecs';
 import {Grow} from "../components/Grow";
 
 export class GrowSystem extends EntitySystem {

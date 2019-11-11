@@ -1,4 +1,4 @@
-import {System} from 'ept-ecs/lib';
+import {System} from 'ept-ecs';
 
 export class UISystem extends System {
     public score: number;

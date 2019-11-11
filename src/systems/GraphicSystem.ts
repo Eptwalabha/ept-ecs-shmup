@@ -1,4 +1,4 @@
-import {Manager, EntitySystem, Aspect} from 'ept-ecs/lib';
+import {Manager, EntitySystem, Aspect} from 'ept-ecs';
 import {Position} from "../components/Position";
 import {HitBox} from "../components/HitBox";
 import {Grow} from "../components/Grow";
